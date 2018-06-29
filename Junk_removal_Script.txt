@@ -1,0 +1,41 @@
+
+
+#!/bin/ksh
+# ControlM_Remove.sh
+# Version: 1.0 
+# Script to remove Ctrl+M character and bad data consisting of special characters (ÿ and §)
+# Author    : Cognizant
+# Created   : 11/11/2013
+# Modified  : 10/12/2013
+
+export SRC_DIR=$1
+#export SRC_FILE=$2
+#export RENAME_SRC_FILE=$3
+
+
+
+### steps to create file list ##############
+File_Details=`ls  $SRC_DIR`
+print "$File_Details"
+
+	for i in ${File_Details}; do
+	#	File_Name=`echo $File_Details | cut -d " " -f9`
+	#	print $File_Name >> $SRC_DIR/$File_List
+	sed 's/'"$(printf '\015')"'//g' $SRC_DIR/$i > $SRC_DIR/CTRL_M_REMOVED_INTERMEDIATE_FILE.txt
+	#mv $SRC_DIR/CTRL_M_REMOVED_INTERMEDIATE_FILE.txt $SRC_DIR/$i
+	
+	sed '/ÿ/d' $SRC_DIR/CTRL_M_REMOVED_INTERMEDIATE_FILE.txt > $SRC_DIR/Y_SYMBOL_REMOVED_INTERMEDIATE_FILE.txt
+ 	sed '/§/d' $SRC_DIR/Y_SYMBOL_REMOVED_INTERMEDIATE_FILE.txt > $SRC_DIR/s_SYMBOL_REMOVED_INTERMEDIATE_FILE.txt
+ 	mv $SRC_DIR/s_SYMBOL_REMOVED_INTERMEDIATE_FILE.txt $SRC_DIR/$i
+	done
+
+
+rm $SRC_DIR/CTRL_M_REMOVED_INTERMEDIATE_FILE.txt
+rm $SRC_DIR/Y_SYMBOL_REMOVED_INTERMEDIATE_FILE.txt
+
+
+
+
+
+
+
