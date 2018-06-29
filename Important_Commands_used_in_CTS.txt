@@ -1,0 +1,113 @@
+
+
+Command to take the count from multiple zipped(.gz) files:
+for x in SSP_NASCO_MBR_MEM_201606*.gz ; do gunzip -c "$x" | wc -l && echo $x ; done
+
+
+Alternative of touch command--
+printf > file_3.txt     ==> this will create a 0 byte file (named file_3.txt)
+
+
+Command to remove ^M from a file:
+ sed 's/'"$(printf '\015')"'//g' file.txt  > final.txt
+
+
+Command to extract the TXn IDs from a file consists of XMLs (here it is medisys_mcn_XML.txt)
+awk -F '</externalCorrelationId>' '{print $1}' medisys_mcn_XML.txt | awk -F '<externalCorrelationId>' '{print $2}' > /home/ad77678/check.txt
+
+
+Command to return the count of a certain pattern--
+cat Failed_RECON_STAR_TxnID.csv | cut -d "," -f5 | sort | uniq -c    => this will give the count of all the values coming in 5th field.
+
+Command to pick 4th column (each column seperated by '|') value which is 9
+$ awk -F '|' '$4 ~ 9 { print }'  <inputfile>  >  <outputfile>
+$ awk -F '|' '$5 ~ 0001 { print }'  pipe_delimited.txt  >  final_op.txt
+Similarly,
+cat Missing_STATUS_Mismatched_STAR.txt | cut -d "|" -f7 | grep -w ACTIVE 
+
+
+Command to pick the lines with Matching pattern at certain position:
+awk -F '|' '$7 == "ACTIVE"'  Inputfile.txt >  outputfile.txt.
+
+
+Command to pick the 8th field of a file seperated by '|'
+awk -F '|' '{print $8}' SSP_NASCO_MBR_MEM.TXT >ank.txt
+
+To Check if a particular filed has how many types values.
+cat SSP_NASCO_GRP_CON.TXT | nawk -F"|" '{print $49}' | sort | uniq -c | head
+here in groupcon file we will be checking how many types of values 49th field is holding
+
+
+Change password in Unix=> passwd
+
+
+Command to pick the subdirectoried under a directory
+ls -lrt | grep ^d  
+
+Command to take the TxnIDs( exuding the timestamp part)
+awk -F '_' '{print $1 "_" $2 "_" $3 "_" $4 "_" $5 "_" $6 "_" $7}'   No_contract_found.txt  > abc.txt
+
+Command to Extract the n th field (where each field is seperated by |  )
+cat file.txt |  cut -d "|" -f1 > abc.txt
+here from file.txt we are extracting the first field(thats why f1, if 2nd field then it would be f2)(where each field/column is seperated by | )
+
+Command to Pick the files with multiple patterns:
+ls -t *@(ASPIRE|LIFEPS)*     => this will show file names with *ASPIRE* and *LIFEPS*
+
+
+Transfer files from one Unix to another Unix env-
+scp CF_ACES_Member_Contract.TXT ad77678@vaathmr1287:/gpfs/pcenterdata/prod/SrcFiles/EMAIL/InitialLoadresubmit.txt
+ 
+
+grep -l   = is used to find out the file name where the grep is getting satisfied. Ex- 
+grep -l 'ABCD' *<file_name>  = this will give the output with the file names where 'ABCD' are present
+
+zgrep = used to see the matching pattern + file name
+zgrep 512M53929 Archive_CF_SSP_PIS_MBR_201602* 
+
+gunzip -c == will enable the file to unzip and do some operation in that file like searching but not actually unzip.
+another way--
+zgrep -f /home/ad77678/FEP_ID_U.txt   > /home/ad77678/fep.txt
+
+
+Command to check the number of columns in a file( say pipe delimited):
+head -1 temp.txt | tr '|' '\n' | wc -l
+here from temp.txt first line is taken and delimeter '|' is replaces(by tr command) with new line '\n' and then takes the count.
+
+Command to replcae SPACE to NEW LINE Character:
+tr ' ' '\n' <wordcount.txt > spacetonewline.txt    ==> here each space in wordcount file will be replaced by new line character and be saved at spacetonewline.txt
+
+So, cat HCID_LIST.txt | tr '\n' '|' > test.txt  == this with transpose the column into row(given that HCID.txt has one column only)
+and append '|' in between every record.
+
+Sqeeze repeated letters --
+cat sa.txt | tr -s " " > check.txt     ==== this will squeeze multiple space character (if present in sa.txt) to one and redirect to check.txt
+
+
+To find the difference between two files.--
+first sort the two files to be compares by using  'sort -u filename > sorted_file_name'
+ comm file1.txt file2.txt  => this will give three columns ( first column consists the data only present in file1.txt, second column consists the data present only in file2.txt, third column shows the data common in both the files)
+
+comm -23 file1.txt  file2.txt => this will give the data only present in file1.txt (i.e compress the 2nd and 3rd column as explained previously)
+
+
+Replace a string with a desired string-- 
+sed  's/_823/_NASCO/g' 8093061_SubID_Src.txt   ==> here '_823' will be globally replaced with '_NASCO' 
+
+
+Command to slpit files in specified lines-
+split -l  <line number>  <file_name>
+
+To replace one string:
+sed "s/SSP_NascoGroup_PartyIdRef_Null.txt://g" test.txt  > output-file_name
+Here from test.txt it will replace SSP_NascoGroup_PartyIdRef_Null.txt: by blank
+
+Command to remove HRD and TLR from a file--
+grep -vE 'HDR|TRL' file1.txt > check.txt    = this will remove the lines from file1.txt which starts with 'HDR' or 'TLR'
+grep -vE 'HDR|TRL' FACETS*.txt > check.txt = this will remove HDR or TLR from any file name starting with FACETS and concatinate into one file names check.txt
+
+
+$ = Session variable
+$$= Mapping variable / Workflow Variable
+In Workflow=  $ is used for path
+      $$ is used for files in script
